@@ -8,9 +8,6 @@ public class Orc : Character
         Health = _health;
         Damage = _damage;
     }
-    ///public override float Health { get => Health; set => Health = value; }
-    ///public override float Damage { get => Damage; set => Damage = value; }
-    ///public override string Name { get => Name; set => Name = value; }
     public override string Type {get => "Orc";}
     public override void Attack(bool isAttack, Character character)
     {

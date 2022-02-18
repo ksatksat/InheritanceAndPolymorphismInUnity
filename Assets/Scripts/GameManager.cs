@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log(orc.GetName());
         Debug.Log(human.GetName());
+        Debug.Log(elf.GetName());
     }
 
     void Update()
