@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -13,7 +14,8 @@ public class GameManager : MonoBehaviour
     bool isOrcAttacks, isHumanAttacks, isEveryoneAttacked, isFriendshipDeclared;
     bool isElfFoundFriend = false;
     int orcOrHuman;
-    private void Awake() 
+    List<Character> everyOne = new List<Character>();
+    void Awake() 
     {
         orc = orcGO.GetComponent<Orc>();
         orc.Name = "Urukhai";
@@ -28,12 +30,16 @@ public class GameManager : MonoBehaviour
         elf.Health = 100f;
         elf.Damage = 36f;
         inputManager = inputManagerGO.GetComponent<InputManager>();
+        
     }
     void Start()
     {
         Debug.Log(orc.GetName());
         Debug.Log(human.GetName());
         Debug.Log(elf.GetName());
+        everyOne.Add(orc);
+        everyOne.Add(human);
+        everyOne.Add(elf);
     }
 
     void Update()
@@ -73,20 +79,22 @@ public class GameManager : MonoBehaviour
     }
     void AttackEveryone()
     {
-        Character[] everyOne = {orc, human, elf};
+        //Character[] everyOne = {orc, human, elf};
         isEveryoneAttacked = inputManager.AttackEveryone();
-        foreach (var item in everyOne)
+        foreach (Character character in everyOne)
         {
             if (!isEveryoneAttacked)
             {
                 return;
             }
-            if (item.Health <= 0f)
+            if (character.Health <= 0f)
             {
-                Debug.Log($"{item.GetName()} can't take damage anymore because his dead !");
-                return;
+                Debug.Log($"{character.GetName()} can't take damage anymore because his dead !");
             }
-            item.TakeDamage(isEveryoneAttacked);
+            else
+            {
+                character.TakeDamage(isEveryoneAttacked);
+            }
         }
     }
     void MakeFriendsFromTwoSides()
@@ -100,15 +108,29 @@ public class GameManager : MonoBehaviour
         {
             return;
         }
-        orcOrHuman = Random.Range(1,3);//random will decide with whom elf become friends
-        switch (orcOrHuman)
+        foreach (Character character in everyOne)
         {
-            case 1:
-            elf.MakeTwoSidesFriends(orc);
-            break;
-            case 2:
-            elf.MakeTwoSidesFriends(human);
-            break;
+            if (character is Orc)
+            {
+                orc.MakeTwoSidesFriends(elf);
+            }
+            if (character is Human)
+            {
+                human.MakeTwoSidesFriends(elf);
+            }
+            if (character is Elf)
+            {
+                orcOrHuman = Random.Range(1,3);//random will decide with whom elf become friends
+                switch (orcOrHuman)
+                {
+                    case 1:
+                    elf.MakeTwoSidesFriends(orc);
+                    break;
+                    case 2:
+                    elf.MakeTwoSidesFriends(human);
+                    break;
+                }
+            }
         }
         isElfFoundFriend = true;//makes elf friend to someone only once
     }

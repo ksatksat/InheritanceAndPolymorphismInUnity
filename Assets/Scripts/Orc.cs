@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Orc : Character
+public class Orc : Character, IFriendshipContract
 {
     public Orc(string _name, float _health, float _damage)
     {
@@ -37,5 +37,9 @@ public class Orc : Character
         Debug.Log($"{this.GetName()} took damage!");
         this.Health -= 8f;
         Debug.Log($"{this.GetName()} health is :{this.Health}");
+    }
+    public void MakeTwoSidesFriends(Character character)
+    {
+        Debug.Log($"{this.GetName()} can't make friend request to {character.GetName()}, because his way too much proud, but can accept friendship");
     }
 }

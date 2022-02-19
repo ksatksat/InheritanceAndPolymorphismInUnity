@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Human : Character
+public class Human : Character, IFriendshipContract
 {
     public Human(string _name, float _health, float _damage)
     {
@@ -37,5 +37,9 @@ public class Human : Character
         Debug.Log($"{this.GetName()} took damage!");
         this.Health -= 8f;
         Debug.Log($"{this.GetName()} health is :{this.Health}");
+    }
+    public void MakeTwoSidesFriends(Character character)
+    {
+        Debug.Log($"{this.GetName()} always open to friendship with {character.GetName()}");
     }
 }
